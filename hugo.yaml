@@ -1,0 +1,55 @@
+baseURL: 'https://www.strangeplanet.fr/devlog/'
+languageCode: 'en-us'
+title: 'StrangePlanet'
+theme: 'PaperMod'
+
+menus:
+  main:
+    - name: Tags
+      pageRef: /tags
+    - name: Archives
+      pageRef: /archives
+    - name: Search
+      pageRef: /search
+
+disableKinds:
+  - rss
+
+outputs:
+  home:
+    - HTML
+    - JSON
+
+permalinks:
+  page:
+    posts: /posts/:year/:month/:slug/
+
+pagination:
+  pagerSize: 5
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+  highlight:
+    lineNos: true
+
+params:
+  showReadingTime: true
+  showCodeCopyButtons: true
+  defaultTheme: dark
+  disableThemeToggle: true
+  showToc: true
+  tocOpen: true
+  comments: true
+  cover:
+    responsiveImages: false
+  assets:
+    favicon: "https://www.strangeplanet.fr/favicon.png"
+  homeInfoParams:
+    content: This blog is about electronics, web developement, IOT, Home Assistant, DIY and everything else.
+  socialIcons:
+    - name: "github"
+      url: "https://github.com/mistic100"
+    - name: "printables"
+      url: "https://www.printables.com/@mistic100"

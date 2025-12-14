@@ -1,0 +1,7 @@
+.first-entry {
+    min-height: 0 !important;
+}
+
+.post-content img {
+    display: inline;
+}

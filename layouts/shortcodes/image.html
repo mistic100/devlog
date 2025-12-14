@@ -1,0 +1,28 @@
+{{ $src := .Get "src" }}
+{{ $size := .Get "size" | default "250" }}
+{{ $absolute := (findRE "^http" $src)}}
+
+{{ $imgSrc := "" }}
+{{ $href := "" }}
+{{ if $absolute }}
+  {{ $imgSrc = $src }}
+  {{ $href = .Get "href" | default $imgSrc }}
+{{ else }}
+  {{ $image := $.Page.Resources.GetMatch $src }}
+  {{ $imageSmall := $image.Process (printf "resize x%s q90" $size) }}
+
+  {{ $imgSrc = $imageSmall.RelPermalink }}
+  {{ $href = $image.RelPermalink }}
+{{ end }}
+
+<a href="{{ $href }}"
+   {{ with .Get "title"}}title="{{ . | plainify }}"{{ end }}
+   class="glightbox"
+   style="box-shadow: none"
+>
+  <img src="{{ $imgSrc }}"
+       {{ with .Get "title"}}alt="{{ . | plainify }}"{{ end }}
+       height="{{ $size }}"
+       style="display: inline"
+  >
+</a>

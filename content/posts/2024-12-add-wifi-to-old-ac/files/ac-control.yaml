@@ -1,0 +1,175 @@
+external_components:
+  - source:
+      type: git
+      url: https://github.com/mistic100/ESPHome-IRremoteESP8266
+    components: [ fujitsu, ir_remote_base ]
+    refresh: 60s
+
+esp32:
+  board: seeed_xiao_esp32c3
+  variant: esp32c3
+  framework:
+    type: arduino
+
+substitutions:
+  display_timeout: '60'
+  icon_size: '48x48'
+
+i2c:
+  sda: 6
+  scl: 7
+  frequency: 400kHz
+
+remote_transmitter:
+  id: ir_led
+  pin: 4
+  carrier_duty_percent: 50%
+
+sensor:
+  - platform: bme280_i2c
+    address: 0x76
+    temperature:
+      id: temp_sensor
+      name: 'Température'
+      filters:
+        - offset: -2.0
+    pressure:
+      id: pres_sensor
+      name: 'Pression'
+    humidity:
+      id: hum_sensor
+      name: 'Humidité'
+      filters:
+        - offset: 8.0
+  - platform: homeassistant
+    entity_id: zone.home
+    id: zone_home
+
+climate:
+  - platform: fujitsu
+    id: clim
+    model: ARREB1E
+    name: 'Clim'
+    sensor: temp_sensor
+    on_control:
+      - lambda: |-
+          id(display_timeout) = ${display_timeout};
+
+button:
+  - platform: template
+    name: 'Step vertical'
+    on_press:
+      then:
+        - lambda: |-
+            id(clim).step_vertical();
+
+font:
+  - file: 'gfonts://Ubuntu Mono@Bold'
+    id: font_large
+    size: 40
+  - file: 'gfonts://Ubuntu Mono'
+    id: font_small
+    size: 20
+
+image:
+  binary:
+    chroma_key: 
+      - file: 'mdi:fire'
+        id: icon_heat
+        resize: ${icon_size}
+      - file: 'mdi:snowflake'
+        id: icon_cool
+        resize: ${icon_size}
+      - file: 'mdi:sun-snowflake-variant'
+        id: icon_heat_cool
+        resize: ${icon_size}
+      - file: 'mdi:fan'
+        id: icon_fan_only
+        resize: ${icon_size}
+      - file: 'mdi:water-percent'
+        id: icon_dry
+        resize: ${icon_size}
+      - file: 'mdi:power'
+        id: icon_off
+        resize: ${icon_size}
+
+globals:
+  - id: display_always_on
+    type: bool
+    restore_value: False
+    initial_value: 'true'
+
+  - id: display_timeout
+    type: int
+    restore_value: False
+    initial_value: ${display_timeout}
+
+time:
+  - platform: homeassistant
+    id: ha_time
+    on_time:
+      - hours: 23
+        minutes: 30
+        then:
+          - lambda: |-
+              id(display_always_on) = false;
+      - hours: 9
+        minutes: 0
+        then:
+          - lambda: |-
+              id(display_always_on) = true;
+
+interval:
+  - interval: 1s
+    then:
+      - lambda: |-
+          if (id(display_timeout) > 0) {
+            id(display_timeout) -= 1;
+          }
+
+display:
+  - platform: ssd1306_i2c
+    id: ssd1306_display
+    model: 'SSD1306 128x64'
+    address: 0x3C
+    rotation: '180°'
+    contrast: '10%'
+    lambda: |-
+      auto mode = id(clim).mode;
+
+      if (mode == climate::CLIMATE_MODE_OFF || id(zone_home).state == 0 || id(display_timeout) == 0 && !id(display_always_on)) {
+        return;
+      }
+
+      // target temperature
+      if (mode != climate::CLIMATE_MODE_FAN_ONLY) {
+        it.printf(0, 0, id(font_large), "%2.0f°C", id(clim).target_temperature);
+      }
+
+      // mode icon
+      switch (mode) {
+        case climate::CLIMATE_MODE_HEAT:
+          it.image(it.get_width()+2, -2, id(icon_heat), ImageAlign::TOP_RIGHT, COLOR_ON, COLOR_OFF);
+          break;
+        case climate::CLIMATE_MODE_COOL:
+          it.image(it.get_width()+2, -2, id(icon_cool), ImageAlign::TOP_RIGHT, COLOR_ON, COLOR_OFF);
+          break;
+        case climate::CLIMATE_MODE_HEAT_COOL:
+          it.image(it.get_width()+2, -2, id(icon_heat_cool), ImageAlign::TOP_RIGHT, COLOR_ON, COLOR_OFF);
+          break;
+        case climate::CLIMATE_MODE_FAN_ONLY:
+          it.image(it.get_width()+2, -2, id(icon_fan_only), ImageAlign::TOP_RIGHT, COLOR_ON, COLOR_OFF);
+          break;
+        case climate::CLIMATE_MODE_DRY:
+          it.image(it.get_width()+2, -2, id(icon_dry), ImageAlign::TOP_RIGHT, COLOR_ON, COLOR_OFF);
+          break;
+        default:
+          it.image(it.get_width()+2, -2, id(icon_off), ImageAlign::TOP_RIGHT, COLOR_ON, COLOR_OFF);
+          break;
+      }
+
+      it.line(0, 45, it.get_width(), 45);
+
+      // current temperature and humidity
+      it.printf(1, it.get_height()+1, id(font_small), TextAlign::BOTTOM_LEFT, "%2.1f°C", id(temp_sensor).state);
+      it.printf(it.get_width()-1, it.get_height()+1, id(font_small), TextAlign::BOTTOM_RIGHT, "%3.0f%%", id(hum_sensor).state);
