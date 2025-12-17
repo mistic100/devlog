@@ -31,7 +31,7 @@ This is absolutely not necessary but I also added a small OLED screen to display
 
 And a BME280 humidity and temperature sensor to have these informations available in Home Assistant.
 
-{{< image src="images/bme280.jpg" title="BME280 ambiant sensor" >}}
+{{< image src="images/bme280.jpg" title="BME280 ambient sensor" >}}
 
 Everything is assembled in a 3D printed case sticked with double-sided tape under the AC unit, the LED facing its receiver.
 
