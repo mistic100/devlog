@@ -30,6 +30,8 @@ I also use a SK6812 WWA addressable LED strip I had laying around. The WWA varia
 
 For the power part I am using a E14 to E27 light bulb adapter from which I stripped the inner part and connected a small 5V AC-DC converter.
 
+> **Obligatory warning:** live wires are dangerous, be safe!
+
 {{< image src="images/e14-e27-adapter.jpg" title="E14 to E27 adapter" >}}
 {{< image src="images/e14-e27-adapter-2.jpg" title="Removed the inner part and soldered wires" >}}
 
@@ -44,6 +46,10 @@ Finally a transparent cover printed in vase mode goes over everything, its purpo
 
 {{< image src="images/body.jpg" title="Main body" >}}
 {{< image src="images/assembly.jpg" title="Assembly with socket and electronics" >}}
+
+{{< image src="images/IMG_20251217_183756.jpg" >}}
+{{< image src="images/IMG_20251217_190758.jpg" >}}
+{{< image src="images/IMG_20251217_190856.jpg" >}}
 
 
 ## Software
@@ -248,15 +254,16 @@ use_blueprint:
 
 ## Conclusion
 
-Now I have a custom light bulb which can be lit very dim and progressively increase the brightness and temperature to wake me upe nicely.
+Now I have a custom light bulb which can be lit very dim and progressively increase the brightness and temperature to wake me up nicely.
 
-PHOTO HERE
+This photo show the difference of brightness at minimum for the commercial bulb (bottom) and my version (top). Concurrently the commercial version has a higher maximum brightness.
+
+{{< image src="images/IMG_20251217_191252.jpg" >}}
 
 If you want to create a similar device you can find here all my work files:
 
 - SolidWorks model
-- 3MF file ready for printing
 - PlatformIO project
 - Z2M custom converter
   
-ZIP HERE
+[zigbee-light-bulb (dec 2025).zip - 8 Mio](files/zigbee-light-bulb%20(dec%202025).zip)
