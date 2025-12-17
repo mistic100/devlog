@@ -13,7 +13,7 @@ cover:
 
 A while ago a bought a generic Zigbee light bulb ([this one](https://www.zigbee2mqtt.io/devices/IC-CDZFB2AC004HA-MZN.html)) with the intention to use it in my bedroom as a cheap sunrise simulator. So far it works very well, and it had helped me wake up more easily.
 
-The only complain I have about this light (and as far as I know, every Zigbee light bulb on the market) is that the minimum brightness is not so minimal. It happens that I wake immediately as it lights up at minimum brightness and temperature. So I decided to make my own!
+The only complain I have about this light (and as far as I know, every Zigbee light bulb on the market) is that the minimum brightness is not so minimal. It happens that I wake immediately as it lights up at minimum brightness. So I decided to make my own!
 
 The goal is to use the Zigbee capability of some ESP32 chips to control an adressable LED strip.
 
@@ -36,7 +36,7 @@ For the power part I am using a E14 to E27 light bulb adapter from which I strip
 
 ### Case
 
-In order to contain the controller, the power adapter and the LED strip, and secured everything to the socket I designed a 3D printable part in SolidWorks.
+In order to contain the controller, the power adapter and the LED strip, and secured everything to the socket I designed a 3D printable case in SolidWorks.
 
 The main body is basically a tube in which is packed the electronics, and the strip is wrapped around. It screws to the socket with the original screws. And a lid closes everything.
 
@@ -119,11 +119,11 @@ void loop()
 }
 ```
 
-Now lets implement the `setLight` function. The goal is to map the temperature value provided by the Zigbee controller in mired unit (with Kelvin = 1.000.000 / mired) to "fake" RGB values. We configured FastLED with `BRG` leds order, which means the following mapping:
+Now lets implement the `setLight` function. The goal is to map the temperature value provided by the Zigbee controller in mired unit (with Kelvin = 1.000.000 / mired) to "fake" RGB values with the following mapping:
 
-- Red -> Amber (~1800K)
-- Green -> Warm White (~3000K)
-- Blue -> Cold White (~6000K)
+- Red → Amber (~1800K)
+- Green → Warm White (~3000K)
+- Blue → Cold White (~6000K)
 
 ```c++
 #define TEMP_AMBER 1800
@@ -140,12 +140,11 @@ void setLight(bool on, uint8_t level, uint16_t mireds)
 
     CRGB color;
 
-    uint16_t temp = 1000000.0 / mireds;
-    if (temp < TEMP_AMBER) temp = TEMP_AMBER;
-    if (temp > TEMP_COLD) temp = TEMP_COLD;
+    uint16_t temp = constrain(1000000.0 / mireds, TEMP_AMBER, TEMP_COLD);
 
     if (temp <= TEMP_WARM)
     {
+        // fade amber to warm
         auto factor = (uint8_t) map(temp, TEMP_AMBER, TEMP_WARM, 0, 255);
         color.r = 255 - factor;
         color.g = factor;
@@ -153,6 +152,7 @@ void setLight(bool on, uint8_t level, uint16_t mireds)
     }
     else
     {
+        // fade warm to cold
         auto factor = (uint8_t) map(temp, TEMP_WARM, TEMP_COLD, 0, 255);
         color.r = 0;
         color.g = 255 - factor;
@@ -223,6 +223,8 @@ export default {
 };
 ```
 
+And restart Z2M to load the new configuration for the device.
+
 ### Run the sunrise effect
 
 In order to animate the light from dim orange to bright white I use this [Light Transition Effect](https://github.com/Mirai-Miki/home-assistant-blueprints/blob/main/ha_light_transition_blueprint.yaml) blueprint in Home Assistant. The script looks like this:
@@ -255,6 +257,6 @@ If you want to create a similar device you can find here all my work files:
 - SolidWorks model
 - 3MF file ready for printing
 - PlatformIO project
-- Z2M custom converte
+- Z2M custom converter
   
 ZIP HERE

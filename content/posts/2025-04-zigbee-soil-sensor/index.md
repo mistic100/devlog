@@ -10,7 +10,7 @@ cover:
     image: cover.jpg
 ---
 
-Since I moved in to my new flat I placed some house plants on a suspended shelf in my living room. I wanted a way to monitor the soil humidity and send alerts to Home Assistant when watering is needed.
+Since I moved in to my new flat I added some house plants on a suspended shelf in my living room. I wanted a way to monitor the soil humidity and send alerts to Home Assistant when watering is needed.
 
 There are lot off-the-shelf sensors but they all run on batteries. You also need one for each plant. Creating my own solution was a good small project to experiment with the Zigbee protocol.
 
@@ -34,6 +34,8 @@ I also designed a small 3D printed case to protect the board and have connection
 
 ## Software
 
+I am using PlatformIO extension on Visual Studio Code. The necessary configuration can be found on my GitHub which the link is at the end of this page.
+
 ### Sensor calibration
 
 We will read the sensor output with the `analogRead` function which returns a value between `0` and `4095`. But in order to map this value to a humidity level we need to calibrate it.
@@ -54,11 +56,11 @@ void loop()
 }
 ```
 
-Now simply wire a sensor to pin 0 and open the serial monitor to know the value read in different situations. I arbitrarily decided that 0% is when the sensor is in open air and 100% is when the sensor is fully immerged in a glass of water.
+Now simply wire a sensor to pin 0 and open the serial monitor to know the value in different situations. I arbitrarily decided that 0% is when the sensor is in open air and 100% is when the sensor is fully immerged in a glass of water.
 
 ### Declare the Zigbee device
 
-The standard Espressif framework already implementations for standard Zigbee devices. It is possible to implement you own but the API and the concepts are a bit difficult to grasp... So I decided to simply exposes multiple `ZigbeeTempSensor` for which I only use the humidity value.
+The standard Espressif framework contains implementations for standard Zigbee devices. It is possible to implement you own but the API and the concepts are a bit difficult to grasp... So I decided to simply exposes multiple `ZigbeeTempSensor` for which I only use the humidity value.
 
 I made a sub-class to make the usage easier.
 
@@ -172,7 +174,7 @@ void setup()
 
 ### Configure Zigbee2Mqtt
 
-In order to Z2M to correctly get each sensor data from the device, a custom converter must be declared.
+In order for Z2M to correctly get each sensor data from the device, a custom converter must be declared.
 
 In Home Assistant, custom converters for Z2M are located in your configuration folder in `zigbee2mqtt/external_converters`. Here create a new JavaScript file:
 
@@ -191,6 +193,8 @@ export default {
     meta: { multiEndpoint: true },
 };
 ```
+
+And restart Z2M to load the new configuration for the device.
 
 ## Home Assistant integration
 
@@ -218,7 +222,7 @@ triggers:
 
 Then we create a new item in the todo list, with a condition to not have duplicates.
 
-First define the item name in an script variable.
+First define the item name in a script variable.
 
 ```yaml
 actions:

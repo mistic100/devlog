@@ -10,14 +10,14 @@ cover:
     image: cover.jpg
 ---
 
-Today we create a device to add connectivity to a rather old AC unit which is only controllable with a infra-red remote.
+Today we create a device to add connectivity to a rather old AC unit which is only controllable with an infrared remote.
 
 The goal is to build a small box which can emit IR signals and be controlled by Home Assistant. This enables features like power on the unit in heater or cool mode before arriving home, automate power off when leaving home, etc.
 
 
 ## Hardware
 
-In order to send IR signals we need a transmitter capable of 38kHz, these are easy to find and very cheap [on aliexpress](https://aliexpress.com/item/1005007728215137.html).
+In order to send IR signals we need a transmitter capable of 38kHz, these are easy to find and very cheap [on Aliexpress](https://aliexpress.com/item/1005007728215137.html).
 
 {{< image src="images/ir-led.jpg" title="IR LED module" >}}
 
@@ -40,9 +40,9 @@ Everything is assembled in a 3D printed case sticked with double-sided tape unde
 
 ## Software
 
-The go-to platform to make smart home devices is [ESPHome](https://esphome.io/) which can be installed on a large variety of micro-controllers and offers hundreds of building blocks. ESPHome already has the [IR Remote Climate](https://esphome.io/components/climate/climate_ir/) component which supports a bunch of units, be unfortunately not mine: Fujitsu and Fujitsu General are two different control protocols and ESPHome only supports Fujitsu General.
+The go-to platform to make smart home devices is [ESPHome](https://esphome.io/) which can be installed on a large variety of micro-controllers and offers hundreds of building blocks. ESPHome already has the [IR Remote Climate](https://esphome.io/components/climate/climate_ir/) component which supports a bunch of units, but unfortunately not mine: Fujitsu and Fujitsu General are two different control protocols and ESPHome only supports thr later.
 
-Furtunately there is an Arduino library called [IRremoteESP8266](https://github.com/crankyoldgit/IRremoteESP8266) which supports my unit (and a lot more). All I add to do was to expose the capabilities for IRremoteESP8266 into a ESPHome component. Enters my [ESPHome-IRremoteESP8266](https://github.com/mistic100/ESPHome-IRremoteESP8266) projects, which does just that.
+Furtunately there is an Arduino library called [IRremoteESP8266](https://github.com/crankyoldgit/IRremoteESP8266) which supports my unit (and a lot more). All I add to do was to expose the capabilities for IRremoteESP8266 into a ESPHome component. Enters my [ESPHome-IRremoteESP8266](https://github.com/mistic100/ESPHome-IRremoteESP8266) project, which does just that.
 
 Then it is very easy to create a climate device with ESPHome configuration:
 
@@ -71,7 +71,6 @@ external_components:
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
-  fast_connect: true
 
 api:
   encryption:
@@ -93,7 +92,7 @@ climate:
 
 ### Temperature sensor integration
 
-A bit more configuration must be added to use the BME280 sensor and report the data back to Home Assistant:
+A bit more configuration must be added to use the BME280 sensor and reports the data back to Home Assistant:
 
 ```yaml
 # init I2C controller

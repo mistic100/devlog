@@ -11,19 +11,19 @@ cover:
     image: cover.jpg
 ---
 
-Today project is all about home automation. In want the ceiling light in my open kitchen to automatically turn on when I walk in. For that I cannot use a cheap PIR sensor as it will pick people walking by the living room, instead I need something capable or precisely locate people in the room.
+Today project is all about home automation. In want the ceiling light in my open kitchen to automatically turn on when I walk in. For that I cannot use a cheap PIR sensor as it will pick people walking by the living room, instead I need something capable of precisely locate people in the room.
 
 ## Hardware
 
-While this seems future/expensive tech, this is in fact already possible with devices as cheap as 2-3€: the company Hi-Link produces various models of human presence radars using mmWave technology, I choosed the most expensive (5€ !), the LD2450, capable of tracking 3 peoples up to 6 meters.
+While this seems future/expensive tech, this is in fact already possible with devices as cheap as 2-3€: the company Hi-Link produces various models of human presence radars using mmWave technology, I choosed the most expensive (5€ !), the LD2450, capable of tracking 3 people up to 6 meters.
 
 {{< image src="images/ld2450.jpg" title="HLK-LD2450" >}}
 
-When hooked to a micro controller it is possible to count the number of persons in range of the sensor an know their positions. With that I can know if someone is in the kitchen "zone" and turn on the light, then turn it off when the person leaves.
+When plugged to a micro controller it is possible to count the number of persons in range of the sensor an know their positions. With that I can know if someone is in the kitchen "zone" and turn on the light, then turn it off when the person leaves.
 
 As always the simpliest way to connect this device to Home Assistant, is to use ESPHome as it already contains the [necessary component](https://esphome.io/components/sensor/ld2450/).
 
-That means using an ESP32 micro controller, I went for the D1 mini ESP32, which is a bit overkill, a smaller ESP8266 would be largely sufficient.
+That means using an ESP micro controller, I went for the D1 mini ESP32, which is a bit overkill, a smaller ESP8266 would be largely sufficient.
 
 {{< image src="images/esp32-d1.jpg" title="D1 mini ESP32" >}}
 
