@@ -28,13 +28,9 @@ The IV-27 tube is a multiplexed display: it has 8 inputs for each part of a digi
 For this job we use the MAX6921 IC which has 20 high-voltage outputs (I choose to not use the first grid which only has symbols nor the right-most digit).
 The MAX6921 is a simple serial to parallel converter: to send a data frame we have to put DIN low or high, ticking CLK for each value, once the 20 bits are send, ticking LOAD sets the outputs accordingly.
 
-Because the display is multiplexed we have to repetitively set each digit in an infinite loop, as fast as possible.
+Because the display is multiplexed we have to repetitively set each digit in an infinite loop, as fast as possible. And as I didn't want to order a custom PCB and do all my assembly on a proto-board, I ordered this SOP28 to DIP adapter.
 
-{{< image src="images/MAX6921.jpg" title="MAX6921 serial to parallel converter" >}}
-
-As I didn't want to order a custom PCB and do all my assembly on a proto-board, I ordered this SOP28 to DIP adapter.
-
-{{< image src="images/sop28-adapter.jpg" title="SOP28 to DIP adapter" >}}
+{{< image src="images/MAX6921.jpg" title="MAX6921 serial to parallel converter soldered to its SOP28 adapter" >}}
 
 The brain of the clock will a ESP32-C3 micro controller with its Wifi antenna.
 
@@ -90,7 +86,7 @@ A red valve is fitted to the rotary encoder and LED noodles are glued bellow the
 
 ## Software
 
-I won't dive to deep into the firmware as there is a lot going on, everything can be found on [my GitHub repository](https://github.com/mistic100/IV-27-Clock).
+I won't dive too deep into the firmware as there is a lot going on, everything can be found on [my GitHub repository](https://github.com/mistic100/IV-27-Clock).
 
 The features of this clock are:
 
@@ -100,6 +96,7 @@ The features of this clock are:
     - time
     - date
     - temperature
+    - settings
 - automatically turn off at night
 - optionally display short messages from Home Assistant
 - have some settings for date format, light intensity, etc
@@ -115,7 +112,200 @@ I tried to apply some Object Oriented Programming principles and isolate respons
 - `Display`: controls the VFD tube through the serial to parallel converter
 - `Light`: controls the lights
 - `Controller`: the main class responsible to query data and tell the display what to show, it is basically a state machine
-- `Ui`: responds to inputs ooff the rotary encoder to the change the controller state
+- `Ui`: responds to inputs of the rotary encoder to the change the controller state
+
+### Display control
+
+The `Display#loop` method is worth detailing, it is responsible of lighting up the right segments in the tube for the text we want to display.
+
+#### Basic principle
+
+As mentionned earlier the tube has 14 grids (think "character select") and 8 segments (standard 7 segments + dot), each one of these inputs (only 12 grids actually) are assigned to an output of the serial-to-parallel converter. The converter is controlled by three pins: CLK, DIN and LOAD.
+
+Because I soldered wires ramdomly between the converter and the tube I have two mapping table between the desired grid/segment and the corresponding output:
+
+```c++
+uint8_t GRID[NUM_GRIDS] = {
+    // 14 unused
+    2,  // 13
+    18, // 12
+    1,  // 11
+    17, // 10
+    0,  // 9
+    16, // 8
+    5,  // 7
+    7,  // 6
+    6,  // 5
+    4,  // 4
+    19, // 3
+    3,  // 2
+    // 1 unused
+};
+
+uint8_t SEGMENTS[8] = {
+    10, // A
+    12, // B
+    15, // C
+    9,  // D
+    14, // E
+    11, // F
+    13, // G
+    8,  // Pt
+};
+```
+
+To light up a particular segment in a particular grid, we need to set high the corresponding pins, that means set DIN 20 times to high or low state, "ticking" CLK for every bit, then tick LOAD to "commit" the data. For example to light up the segment A of the first grid a basic code would be like:
+
+```c++
+// initialize data
+byte data = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+data[GRID[0]] = 1;
+data[SEGMENTS[0]] = 1;
+
+// loop each bit
+for (int k = 19; k >= 0; k--) {
+    // set DIN
+    digitalWrite(DRIVER_DIN, data[k]);
+    // tick CLK
+    digitalWrite(DRIVER_CLK, HIGH);
+    digitalWrite(DRIVER_CLK, LOW);
+}
+// tick LOAD
+digitalWrite(DRIVER_LOAD, HIGH);
+digitalWrite(DRIVER_LOAD, LOW);
+```
+
+Now the outputs 2 and 10 of the converter are high, and if the wiring is correct, one segment is on in the tube.
+
+#### More characters
+
+To scale up things we need a way to convert characters (0 to 9 and A to Z) into arrays of segments to light up. Lets introduce two new mapping tables:
+
+```c++
+// ASCII 48-57
+std::array<byte, 7> SEGMENTS_NUMS[] = {
+    {1, 1, 1, 1, 1, 1, 0}, // 0
+    {0, 1, 1, 0, 0, 0, 0}, // 1
+    {1, 1, 0, 1, 1, 0, 1}, // 2
+    {1, 1, 1, 1, 0, 0, 1}, // 3
+    {0, 1, 1, 0, 0, 1, 1}, // 4
+    {1, 0, 1, 1, 0, 1, 1}, // 5
+    {1, 0, 1, 1, 1, 1, 1}, // 6
+    {1, 1, 1, 0, 0, 0, 0}, // 7
+    {1, 1, 1, 1, 1, 1, 1}, // 8
+    {1, 1, 1, 0, 0, 1, 1}, // 9
+};
+
+// ASCII 65-90
+std::array<byte, 7> SEGMENTS_ALPHA[] = {
+    {1, 1, 1, 0, 1, 1, 1}, // A
+    {0, 0, 1, 1, 1, 1, 1}, // b
+    {1, 0, 0, 1, 1, 1, 0}, // C
+    {0, 1, 1, 1, 1, 0, 1}, // d
+    {1, 0, 0, 1, 1, 1, 1}, // E
+    {1, 0, 0, 0, 1, 1, 1}, // F
+    {1, 0, 1, 1, 1, 1, 0}, // G
+    {0, 1, 1, 0, 1, 1, 1}, // H
+    {0, 1, 1, 0, 0, 0, 0}, // I
+    {0, 1, 1, 1, 1, 0, 0}, // J
+    {0, 1, 0, 1, 1, 1, 1}, // K
+    {0, 0, 0, 1, 1, 1, 0}, // L
+    {1, 1, 0, 1, 0, 1, 0}, // M
+    {1, 1, 1, 0, 1, 1, 0}, // N
+    {1, 1, 1, 1, 1, 1, 0}, // O
+    {1, 1, 0, 0, 1, 1, 1}, // P
+    {1, 1, 0, 1, 0, 1, 1}, // Q
+    {1, 1, 0, 0, 1, 1, 0}, // R
+    {1, 0, 1, 1, 0, 1, 1}, // S
+    {0, 0, 0, 1, 1, 1, 1}, // t
+    {0, 1, 1, 1, 1, 1, 0}, // U
+    {0, 1, 0, 0, 0, 1, 1}, // v
+    {0, 1, 1, 1, 1, 1, 1}, // W
+    {0, 0, 1, 0, 0, 1, 1}, // X
+    {0, 1, 1, 1, 0, 1, 1}, // Y
+    {1, 1, 0, 1, 1, 0, 1}, // Z
+};
+
+std::array<byte, 7> SEGMENTS_BLANK = {0, 0, 0, 0, 0, 0, 0};
+```
+
+Lets also declare a string variable which contains the desired text to display (it is managed by the `Controller` class). And a function which will update the `data` array with the correct bits for a particular character in this string.
+
+```c++
+char chars[NUM_GRIDS];
+
+// Updates `data` 8 segments for current character
+void setChar(byte index) {
+    const char s = chars[index];
+
+    // it is a number
+    if (s >= 48 && s <= 57) {
+        setChar(SEGMENTS_NUMS[s - 48]);
+    }
+    // it is an uppercase letter
+    else if (s >= 65 && s <= 90)  {
+        setChar(SEGMENTS_ALPHA[s - 65]);
+    }
+    // it is a lowercase letter
+    else if (s >= 97 && s <= 122) {
+        setChar(SEGMENTS_ALPHA[s - 97]);
+    }
+    // it cannot be displayed
+    else {
+        setChar(SEGMENTS_BLANK);
+    }
+
+    // special case for dots
+    data[SEGMENTS[7]] = s == '.' ? HIGH : LOW;
+}
+
+// copy the segments into `data`
+void setChar(const std::array<byte, 7> &s) {
+    for (byte i = 0; i < 7; i++) {
+        data[SEGMENTS[i]] = s[i];
+    }
+}
+```
+
+#### Display a string
+
+We have all the necessary to display a complete string, we just have to loop on each character.
+
+```c++
+void loop() {
+    // for each character
+    for (byte i = 0; i < 20; i++) {
+        // set the active grid
+        data[GRID[i]] = 1;
+        // set the segments
+        setChar(i);
+
+        // send the data
+        for (int k = 19; k >= 0; k--) {
+            digitalWrite(DRIVER_DIN, data[k]);
+            clock();
+        }
+        load();
+
+        // reset the active grid
+        data[GRID[i]] = 0;
+    }
+}
+
+void clock() {
+    digitalWrite(DRIVER_CLK, HIGH);
+    digitalWrite(DRIVER_CLK, LOW);
+}
+
+void load() {
+    digitalWrite(DRIVER_LOAD, HIGH);
+    digitalWrite(DRIVER_LOAD, LOW);
+}
+```
+
+This `loop` method is called in the main Arduino loop, effectively blinking the segments very fast and show the text!
+
+The complete implement supports other functions like blinking the whole display, force dots at specific positions, scroll messages longer than 12 characters and also display some simple special characters.
 
 ### Home Assistant
 
