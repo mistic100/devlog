@@ -22,6 +22,8 @@ The goal is to use the Zigbee capability of some ESP32 chips to control an adres
 
 For the hardware I am working with a ESP32-C6 mini developpement board. It is also possible to use the ESP32-H2 which is a bit cheaper has it does not have WiFi (the C6 has WiFi + Bluetooth + Zigbee).
 
+> **Note:** some ESP32-C6 have a battery LED indicator which stays on or blinks when no battery is connected. To disable it you can solder a 10kΩ resistor between the BAT+ pad and the 5V pin.
+
 {{< image src="images/esp32-c6.jpg" title="ESP32-C6 micro-controller" >}}
 
 I also use a SK6812 WWA addressable LED strip I had laying around. The WWA variant is a nice little thing which is controlled like a WS2812 strip, but instead of Red-Green-Blue channels you have Amber-Warm White-Cold White.
