@@ -7,6 +7,7 @@ tags:
     - Zigbee
     - Home Assistant
     - FastLED
+    - light
 cover:
     image: cover.jpg
 ---

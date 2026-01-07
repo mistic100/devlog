@@ -6,7 +6,7 @@ tags:
     - ESP32
     - Home Assistant
     - ESPHome
-    - mmWave
+    - light
 cover:
     image: cover.jpg
 ---

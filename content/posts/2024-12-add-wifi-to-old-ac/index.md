@@ -6,6 +6,7 @@ tags:
     - ESP32
     - Home Assistant
     - ESPHome
+    - climate
 cover:
     image: cover.jpg
 ---
@@ -21,7 +22,7 @@ In order to send IR signals we need a transmitter capable of 38kHz, these are ea
 
 {{< image src="images/ir-led.jpg" title="IR LED module" >}}
 
-We also need a micro-controller with Wifi, I choosed the Seeduino ESP32-C3 as I already used in previous projects.
+We also need a micro-controller with Wifi, I choosed the Seeeduino ESP32-C3 as I already used in previous projects.
 
 {{< image src="images/esp32-c3.jpg" title="ESP32-C3 micro-controller" >}}
 

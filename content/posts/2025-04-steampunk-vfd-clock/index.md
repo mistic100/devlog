@@ -4,7 +4,7 @@ title: 'Steampunk VFD clock'
 summary: 'Making a steampunk themed clock using the IV-27 VFD tube.'
 tags:
     - ESP32
-    - Clock
+    - clock
 cover:
     image: cover.jpg
 ---
