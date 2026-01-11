@@ -30,7 +30,7 @@ The MAX6921 is a simple serial to parallel converter: to send a data frame we ha
 
 Because the display is multiplexed we have to repetitively set each digit in an infinite loop, as fast as possible. And as I didn't want to order a custom PCB and do all my assembly on a proto-board, I ordered this SOP28 to DIP adapter.
 
-{{< image src="images/MAX6921.jpg" title="MAX6921 serial to parallel converter soldered to its SOP28 adapter" >}}
+{{< image src="images/MAX6921.jpg" title="MAX6921 serial to parallel converter soldered to its SOP28 adapter" square=true >}}
 
 The brain of the clock will a ESP32-C3 micro controller with its Wifi antenna.
 
@@ -46,10 +46,10 @@ Other components include:
 - a rotary encoder
 - two LED noodles
 
-{{< image size="175" src="images/bme280.jpg" title="BME280 ambient sensor" >}}
-{{< image size="175" src="images/ds3231.jpg" title="DS3231 RTC module" >}}
-{{< image size="175" src="images/rotary-encoder.jpg" >}}
-{{< image size="175" src="images/led-noodle.jpg" >}}
+{{< image size=175 src="images/bme280.jpg" title="BME280 ambient sensor" >}}
+{{< image size=175 src="images/ds3231.jpg" title="DS3231 RTC module" >}}
+{{< image size=175 src="images/rotary-encoder.jpg" >}}
+{{< image size=175 src="images/led-noodle.jpg" >}}
 
 ### PCB
 
@@ -57,11 +57,12 @@ There are not so much components so the wiring is rather simple. The most cumber
 
 You will notice the use of a transitor to drive the LED from the micro controller, and capacitors to filter out the rotary encoder signals.
 
-{{< image src="images/schematics.png" size="500" >}}
+{{< image src="images/schematics.png" size=500 >}}
 
 As I put everything on a protoboard, my assembly is very ugly... but it works!
 
-{{< image src="https://photos.strangeplanet.fr/_data/i/upload/2025/04/07/20250407184309-c90fa0d0-xs.jpg" href="https://photos.strangeplanet.fr/_data/i/upload/2025/04/07/20250407184309-c90fa0d0-xl.jpg" >}} {{< image src="https://photos.strangeplanet.fr/_data/i/upload/2025/04/07/20250407184310-105d4c1c-xs.jpg" href="https://photos.strangeplanet.fr/_data/i/upload/2025/04/07/20250407184310-105d4c1c-xl.jpg" >}}
+{{< image src="https://photos.strangeplanet.fr/_data/i/upload/2025/04/07/20250407184309-c90fa0d0-xs.jpg" href="https://photos.strangeplanet.fr/_data/i/upload/2025/04/07/20250407184309-c90fa0d0-xl.jpg" >}}
+{{< image src="https://photos.strangeplanet.fr/_data/i/upload/2025/04/07/20250407184310-105d4c1c-xs.jpg" href="https://photos.strangeplanet.fr/_data/i/upload/2025/04/07/20250407184310-105d4c1c-xl.jpg" >}}
 
 Even more when all wires are in place.
 

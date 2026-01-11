@@ -29,7 +29,7 @@ That means using an ESP micro controller, I went for the D1 mini ESP32, which is
 
 To mount everything on the wall I designed this orientable case, it uses a single screw in the wall (in my case the junction box containing an AC adapter).
 
-{{< image src="images/render.png" >}}
+{{< image src="images/render.png" square=true >}}
 
 You can get this model [on Printables](https://www.printables.com/model/1514952-mmwave-sensor-ld2450-d1-mini-esp32).
 
@@ -113,4 +113,4 @@ Now the last step is to create a automation to turn the light on and off, for th
 
 Here is the final product mounted on the wall:
 
-{{< image src="images/IMG_20251214_095004.jpg" >}}
+{{< image src="images/IMG_20251214_095004.jpg" square=true >}}

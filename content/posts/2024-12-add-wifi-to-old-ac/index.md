@@ -36,7 +36,8 @@ And a BME280 humidity and temperature sensor to have these informations availabl
 
 Everything is assembled in a 3D printed case sticked with double-sided tape under the AC unit, the LED facing its receiver.
 
-{{< image src="images/render.jpg" size="220" >}} {{< image src="images/IMG_20241221_114847.jpg" size="220" >}}
+{{< image src="images/render.jpg" size=220 >}}
+{{< image src="images/IMG_20241221_114847.jpg" size=220 >}}
 
 
 ## Software
