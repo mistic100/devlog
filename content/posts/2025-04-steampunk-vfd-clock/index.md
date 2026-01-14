@@ -48,8 +48,8 @@ Other components include:
 
 {{< image size=175 src="images/bme280.jpg" title="BME280 ambient sensor" >}}
 {{< image size=175 src="images/ds3231.jpg" title="DS3231 RTC module" >}}
-{{< image size=175 src="images/rotary-encoder.jpg" >}}
-{{< image size=175 src="images/led-noodle.jpg" >}}
+{{< image size=175 src="images/rotary-encoder.jpg" title="Rotary encoder" >}}
+{{< image size=175 src="images/led-noodle.jpg" title="LED &quot;noodle&quot;" >}}
 
 ### PCB
 
@@ -61,12 +61,12 @@ You will notice the use of a transitor to drive the LED from the micro controlle
 
 As I put everything on a protoboard, my assembly is very ugly... but it works!
 
-{{< image src="https://photos.strangeplanet.fr/_data/i/upload/2025/04/07/20250407184309-c90fa0d0-xs.jpg" href="https://photos.strangeplanet.fr/_data/i/upload/2025/04/07/20250407184309-c90fa0d0-xl.jpg" >}}
-{{< image src="https://photos.strangeplanet.fr/_data/i/upload/2025/04/07/20250407184310-105d4c1c-xs.jpg" href="https://photos.strangeplanet.fr/_data/i/upload/2025/04/07/20250407184310-105d4c1c-xl.jpg" >}}
+{{< image src="piwigo:2025/04/07/20250407184309-c90fa0d0" >}}
+{{< image src="piwigo:2025/04/07/20250407184310-105d4c1c" >}}
 
 Even more when all wires are in place.
 
-{{< image src="https://photos.strangeplanet.fr/_data/i/upload/2025/04/07/20250407184312-0ec058ac-xs.jpg" href="https://photos.strangeplanet.fr/_data/i/upload/2025/04/07/20250407184312-0ec058ac-xl.jpg" >}}
+{{< image src="piwigo:2025/04/07/20250407184312-0ec058ac" >}}
 
 ### Case design
 
@@ -74,15 +74,15 @@ I mentionned I wanted a nice steampunk look to my clock, that means brass, coppe
 
 The tube is mounted to the main case with standard plumbing fittings.
 
-{{< image src="https://photos.strangeplanet.fr/_data/i/upload/2025/04/07/20250407184312-de2b1992-xs.jpg" href="https://photos.strangeplanet.fr/_data/i/upload/2025/04/07/20250407184312-de2b1992-xl.jpg" >}}
+{{< image src="piwigo:2025/04/07/20250407184312-de2b1992" >}}
 
 The case itself is 3D printed with two coats of copper effect paint.
 
-{{< image src="https://photos.strangeplanet.fr/_data/i/upload/2025/04/07/20250407184308-f4dc60c7-xs.jpg" href="https://photos.strangeplanet.fr/_data/i/upload/2025/04/07/20250407184308-f4dc60c7-xl.jpg" >}}
+{{< image src="piwigo:2025/04/07/20250407184308-f4dc60c7" >}}
 
 A red valve is fitted to the rotary encoder and LED noodles are glued bellow the tube.
 
-{{< image src="https://photos.strangeplanet.fr/_data/i/upload/2025/04/07/20250407184313-20e437fc-xs.jpg" href="https://photos.strangeplanet.fr/_data/i/upload/2025/04/07/20250407184313-20e437fc-xl.jpg" >}}
+{{< image src="piwigo:2025/04/07/20250407184313-20e437fc" >}}
 
 
 ## Software

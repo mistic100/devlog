@@ -1,13 +1,15 @@
 {{ $src := .Get "src" }}
 {{ $size := .Get "size" | default 250 }}
 {{ $square := .Get "square" | default false }}
-{{ $absolute := (findRE "^http" $src)}}
 
 {{ $imgSrc := "" }}
 {{ $href := "" }}
-{{ if $absolute }}
+{{ if (findRE "^http:" $src) }}
   {{ $imgSrc = $src }}
   {{ $href = .Get "href" | default $imgSrc }}
+{{ else if (findRE "^piwigo:" $src) }}
+  {{ $imgSrc = printf "https://photos.strangeplanet.fr/i.php?/upload/%s-xs.jpg" (replace $src "piwigo:" "") }}
+  {{ $href = printf "https://photos.strangeplanet.fr/i.php?/upload/%s-xl.jpg" (replace $src "piwigo:" "") }}
 {{ else }}
   {{ $image := $.Page.Resources.GetMatch $src }}
   {{ $imageSmall := $image.Process (cond $square (printf "fill %dx%d center q90" $size $size) (printf "resize x%d q90" $size)) }}
