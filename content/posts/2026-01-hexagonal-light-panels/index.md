@@ -149,7 +149,7 @@ Here are the steps to assemble a tile:
 {{< image src="photos/IMG_20260113_220626.jpg" >}}
 {{< image src="photos/IMG_20260115_194718.jpg" >}}
 
-4. Wire the LED strip to the PCB. This is the most tedious step of the build! My design does no use the backup data line, if you have one you must solder BI and GND together.
+4. Wire the LED strip to the PCB. This is the most tedious step of the build! My design does no use the backup data line, if you have one you must solder BIN and GND together.
 
 {{< image src="photos/IMG_20260113_221624.jpg" >}}
 
@@ -231,13 +231,13 @@ This is what this project cost me as of January 2026 for 10 tiles and 3 shelves:
 | 2.54mm straight 40-pins header | 0.25€ |
 | 8mm push button | 0.60€ |
 | 12V 150W power supply | 4.35€ |
-| x10 frosted acrylic panels | 77€ |
+| x10 frosted acrylic panels + shipping | 77€ |
 | x50 connector PCB | 12.55€ |
 | **TOTAL** | **149.70€** |
 
-So is it worth it? Nanoleaf Shapes Hexagons kit is 180€ for 9 panels. Govee Glide Hexa kit is 170€ for 10 panels. My version is a bit cheaper but considering the time invested – I estimate I spend ~15 hours designing the model and 20 minutes assembly by tile – and the lesser quality (mainly due to the diffuser) I would say: go to the retail product, unless you like making stuff yourself like I do!
+So is it worth it? Nanoleaf Shapes Hexagons kit is 180€ for 9 panels, Govee Glide Hexa kit is 170€ for 10 panels. My version is a bit cheaper but considering the time invested – I estimate I spend ~15 hours designing the model and 20 minutes assembly by tile – and the lesser quality (mainly due to the diffuser) I would say: go to the retail product, unless you like making stuff yourself like I do!
 
-The most expensive item is the acrylic panels. You can go a lot cheaper by 3D printing the front covers with translucent PLA (I didn't try) or if you have access to a laser cutter.
+The most expensive item is the acrylic panels. You can go a lot cheaper by 3D printing the front covers with transluscent PLA (I didn't try) or if you have access to a laser cutter.
 
 {{< image src="piwigo:2026/01/17/20260117094048-3d280166" >}}
 {{< image src="piwigo:2026/01/17/20260117094309-9f37fc14" >}}
