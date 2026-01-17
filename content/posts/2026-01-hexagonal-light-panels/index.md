@@ -25,6 +25,8 @@ Of course there are lot of models already available on Printables and other site
 
 So I went on a journey to design my one hexagonal light panels!
 
+> All files for this project are available at the bottom of this page.
+
 
 ## The design
 
@@ -89,7 +91,9 @@ The PCB must be 1.2mm thick, you can order 50 pieces for ~10€ on JLCPCB.
 
 The acrylic panels are more expensive, I had them laser cut by [plaqueplastique.fr](https://plaqueplastique.fr/) (french company) for 6€ each.
 
-{{< image src="photos/IMG_20260111_172016.jpg" title="Connectors pieces" >}} {{< image src="photos/IMG_20260116_201613.jpg" title="Acrylic panels" >}}
+{{< image src="photos/IMG_20260111_172016.jpg" title="Connectors pieces" >}}
+{{< image src="photos/IMG_20260117_090814.jpg" title="ESP8266, buck converter and GX12 connector" >}}
+{{< image src="photos/IMG_20260116_201613.jpg" title="Acrylic panels" >}}
 
 ### Shelves
 
@@ -142,7 +146,8 @@ Here are the steps to assemble a tile:
 
 3. Place the connectors on the tile and wire all connectors together.
 
-{{< image src="photos/IMG_20260113_220626.jpg" >}} {{< image src="photos/IMG_20260115_194718.jpg" >}}
+{{< image src="photos/IMG_20260113_220626.jpg" >}}
+{{< image src="photos/IMG_20260115_194718.jpg" >}}
 
 4. Wire the LED strip to the PCB. This is the most tedious step of the build! My design does no use the backup data line, if you have one you must solder BI and GND together.
 
@@ -190,7 +195,8 @@ Once you have all your tiles, assemble them on a flat surface, front laying down
 
 4. Now is a good time to ensure everything lights up correctly!
 
-{{< image src="photos/IMG_20260116_171836.jpg" >}} {{< image src="photos/IMG_20260116_182622.jpg" >}}
+{{< image src="photos/IMG_20260116_171836.jpg" >}}
+{{< image src="photos/IMG_20260116_182622.jpg" >}}
 
 5. Temporarily insert a **screw-locator** on each tile you want screwed to the wall. You don't need a screw on every tile, 3-4 total should be enough.
 
@@ -206,12 +212,12 @@ Once you have all your tiles, assemble them on a flat surface, front laying down
 
 9. Then mount the fixture on the wall, ensuring each screw is well seated in its keyhole.
 
-{{< image src="photos/IMG_20260116_222956.jpg" >}}
+{{< image src="piwigo:2026/01/17/20260117094520-24afbbd2" >}}
 
 
-## Conclustion
+## Conclusion
 
-This is what this project cost me as of January 2026 for 10 tiles and 2 shelves:
+This is what this project cost me as of January 2026 for 10 tiles and 3 shelves:
 
 | item | price |
 |---|---|
@@ -233,6 +239,13 @@ So is it worth it? Nanoleaf Shapes Hexagons kit is 180€ for 9 panels. Govee Gl
 
 The most expensive item is the acrylic panels. You can go a lot cheaper by 3D printing the front covers with translucent PLA (I didn't try) or if you have access to a laser cutter.
 
-{{< image src="photos/IMG_20260116_223025.jpg" >}}
+{{< image src="piwigo:2026/01/17/20260117094048-3d280166" >}}
+{{< image src="piwigo:2026/01/17/20260117094309-9f37fc14" >}}
+{{< image src="piwigo:2026/01/17/20260117094309-4bb997ae" >}}
+{{< image src="piwigo:2026/01/17/20260117094308-1041f841" >}}
 
-(featured 3D prints are [Twisted Spirit Bonsai Tree by DeadMoon](https://www.printables.com/model/1350129-twisted-spirit-bonsai-tree-decoration-neofantasy) and [Ophelia by BellaNacht](https://www.thingiverse.com/thing:4124352)).
+If you are interrested in creating the same light you can find 3D printing models, DXF and GERBER files on Printables: [Hexagonal light panels by mistic100](https://www.printables.com/model/1559320-hexagonal-light-panels).
+
+And all the source files here: [StrangePlanet-HexaLightPanels_2026-01-16.zip (23.9 Mio)](https://www.strangeplanet.fr/files/Divers/StrangePlanet-HexaLightPanels_2026-01-16.zip)
+
+![](https://licensebuttons.net/l/by-nc-sa/3.0/nl/88x31.png)
