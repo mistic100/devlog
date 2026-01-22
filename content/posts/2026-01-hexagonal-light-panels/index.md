@@ -79,9 +79,9 @@ The controller will be an ESP8266 running WLED, a single push button is used to 
 For each tile (**full** or **ring**) the following parts are needed:
 
 - 60cm long LED strip, 10mm wide or less
-- one 3-pins 2.54mm L15 symmetric connectors ([on aliexpress](https://aliexpress.com/item/1005008747214913.html))
+- one 3-pins 2.54mm L15 symmetric connectors ([aliexpress](https://aliexpress.com/item/32847645375.html))
 - one to six custom connector PCB (one for each connected side + bottom side)
-- one to six 5-pins 2.54mm angled female socket ([on aliexpress](https://aliexpress.com/item/1005008210914833.htm))
+- one to six 5-pins 2.54mm angled female socket ([aliexpress](https://aliexpress.com/item/1005008210914833.html))
 - one 3mm frosted acrylic / 3D printed **cover** or **cover-ring**
 - wires (recommended AWG20 for power)
 - two to ten (two for each connected side) 3D printed **clamp**
