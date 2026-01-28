@@ -12,7 +12,7 @@ on:
       - main
 
 env:
-  LFTP_PARAMS: ${{ github.event.inputs.force_all && '' || '--only-newer --ignore-time' }}
+  LFTP_PARAMS: ${{ github.event.inputs.force_all && '--transfer-all' || '--only-newer --ignore-time' }}
 
 jobs:
   deploy:
