@@ -1,10 +1,18 @@
 name: Deploy Devlog to FTP
 
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      force_all:
+        description:  Force all
+        default: true
+        type: boolean
   push:
     branches:
       - main
+
+env:
+  LFTP_PARAMS: ${{ github.event.inputs.force_all && '' || '--only-newer --ignore-time' }}
 
 jobs:
   deploy:
@@ -29,7 +37,7 @@ jobs:
         run: hugo --minify
 
       - name: FTP Deploy
-        run: lftp -e "open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER; mirror -R --verbose --delete --overwrite --only-newer --ignore-time --parallel=10 public/ /www/devlog; quit"
+        run: lftp -e "open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER; mirror -R --verbose --delete --overwrite $LFTP_PARAMS --parallel=10 public/ /www/devlog; quit"
         env:
           FTP_SERVER: ${{ secrets.FTP_SERVER }}
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
