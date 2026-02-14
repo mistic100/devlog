@@ -60,7 +60,7 @@ Finally a transparent cover printed in vase mode goes over everything, its purpo
 I am using PlatformIO extension on Visual Studio Code. Before starting to code, here is the `platformio.ini` and `partitions.csv` files needed to compile.
 
 ```ini
-[env:esp32-c6-devkitm-1]
+[env:esp32-c6]
 platform = https://github.com/pioarduino/platform-espressif32/releases/download/stable/platform-espressif32.zip
 board = esp32-c6-devkitm-1
 framework = arduino
@@ -71,6 +71,10 @@ build_flags =
   -DCORE_DEBUG_LEVEL=3
   -DZIGBEE_MODE_ED
 monitor_speed = 115200
+upload_flags =
+    --before=usb_reset
+    --after=hard_reset
+    --no-stub
 lib_deps =
   FastLED
 ```
@@ -90,8 +94,6 @@ coredump,   data, coredump,0x3F0000,0x10000,
 ### Declare the Zigbee light
 
 We will use the `ZigbeeColorDimmableLight` class which allows to declare a light with changeable brightness and temperature.
-
-_Note:_ as of writing, the arduino-esp32 framework has not yet been released with temperature support, [this pull request](https://github.com/espressif/arduino-esp32/pull/12094) having been merged only recently. It will probably be available in version 3.3.5.
 
 ```c++
 auto light = ZigbeeColorDimmableLight(10);
