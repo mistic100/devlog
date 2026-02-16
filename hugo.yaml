@@ -53,3 +53,6 @@ params:
       url: "https://github.com/mistic100"
     - name: "printables"
       url: "https://www.printables.com/@mistic100"
+    - name: "piwigo"
+      title: Photos
+      url: "https://photos.strangeplanet.fr"
