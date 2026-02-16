@@ -8,7 +8,7 @@
   {{ $imgSrc = $src }}
   {{ $href = .Get "href" | default $imgSrc }}
 {{ else if (findRE "^piwigo:" $src) }}
-  {{ $imgSrc = printf "https://photos.strangeplanet.fr/i.php?/upload/%s-xs.jpg" (replace $src "piwigo:" "") }}
+  {{ $imgSrc = printf "https://photos.strangeplanet.fr/i.php?/upload/%s-sm.jpg" (replace $src "piwigo:" "") }}
   {{ $href = printf "https://photos.strangeplanet.fr/i.php?/upload/%s-xl.jpg" (replace $src "piwigo:" "") }}
 {{ else }}
   {{ $image := $.Page.Resources.GetMatch $src }}
