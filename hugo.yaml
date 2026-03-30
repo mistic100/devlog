@@ -40,7 +40,10 @@ params:
   cover:
     responsiveImages: false
   assets:
-    favicon: "https://www.strangeplanet.fr/favicon.png"
+    favicon: "https://www.strangeplanet.fr/assets/favicon.ico"
+    favicon16x16: "https://www.strangeplanet.fr/assets/favicon-16x16.png"
+    favicon32x32: "https://www.strangeplanet.fr/assets/favicon-32x32.png"
+    apple_touch_icon: "https://www.strangeplanet.fr/assets/apple-touch-icon.png"
   homeInfoParams:
     content: This blog is about electronics, web developement, IOT, Home Assistant, DIY and everything else.
   socialIcons:
