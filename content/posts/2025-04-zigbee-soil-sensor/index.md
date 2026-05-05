@@ -10,6 +10,17 @@ cover:
     image: cover.jpg
 ---
 
+**Edit 1 year later:** it appears these cheap capacitive sensors are unreliable. After one year I got:
+
+- one completely failed and always report 0
+- one is stuck at ~80%
+- one is stuck at ~40%
+- one still working
+
+Unfortunately I didn't find similar devices of better quality. Perhaps applying a conformal coating could prevent potential oxydation of the components.
+
+---
+
 Since I moved in to my new flat I added some house plants on a suspended shelf in my living room. I wanted a way to monitor the soil humidity and send alerts to Home Assistant when watering is needed.
 
 There are lot off-the-shelf sensors but they all run on batteries. You also need one for each plant. Creating my own solution was a good small project to experiment with the Zigbee protocol.
