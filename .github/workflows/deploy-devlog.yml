@@ -1,28 +1,15 @@
 name: Deploy Devlog to FTP
 
 on:
-  workflow_dispatch:
-    inputs:
-      force_all:
-        description:  Force all
-        default: true
-        type: boolean
+  workflow_dispatch: {}
   push:
     branches:
       - main
-
-env:
-  LFTP_PARAMS: ${{ github.event.inputs.force_all && '--transfer-all' || '--only-newer --ignore-time' }}
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: gerlero/apt-install@v1
-        with:
-          packages: lftp
-
       - name: Checkout
         uses: actions/checkout@v6
         with:
@@ -36,9 +23,24 @@ jobs:
       - name: Build
         run: hugo --minify
 
-      - name: FTP Deploy
-        run: lftp -e "open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER; mirror -R --verbose --delete --overwrite $LFTP_PARAMS --parallel=10 public/ /www/devlog; quit"
-        env:
-          FTP_SERVER: ${{ secrets.FTP_SERVER }}
-          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
-          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+      - name: Tailscale
+        uses: tailscale/github-action@v4
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:github-ci
+          ping: ${{ secrets.SERVER_IP }}
+
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          echo "Host ${{ secrets.SERVER_IP }}" >> ~/.ssh/config
+          echo "  StrictHostKeyChecking no" >> ~/.ssh/config
+
+      - name: Deploy
+        working-directory: ./public
+        run: |
+          rsync -rvcO --no-perms --delete \
+            . github_runner@${{ secrets.SERVER_IP }}:${{ secrets.SERVER_PATH }}/root/devlog
